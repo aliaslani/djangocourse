@@ -1,0 +1,41 @@
+@font-face {
+    font-family: 'Yekan';
+    src: url(/static/main/fonts/Yekan.ttf);
+}
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Yekan' !important;
+    direction: rtl !important;
+
+}
+
+body {
+    direction: rtl;
+    font-family: 'Yekan', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background: #fff;
+
+}
+a.email-address{
+    font-family: sans-serif !important;
+    font-size: 14px;
+    line-height: 1.5;
+}
+a.nav-link{
+    font-family: 'Yekan' !important;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 10px;
+}
+a.nav-link:hover{
+    background-color: tomato;
+    color: white !important;
+    border-radius: 10px;
+}
