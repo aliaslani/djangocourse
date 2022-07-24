@@ -72,6 +72,9 @@ body {
   text-align: right;
   background-color: #fff;
 }
+table{
+  text-align: center;
+}
 
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important;

@@ -34,63 +34,16 @@
       
                       <form class="mx-1 mx-md-4" method="post" action="{% url 'account:register' %}">
                         {% csrf_token %}
-                        <div class="d-flex flex-row align-items-center mb-4">
-                          <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                          <div class="form-outline flex-fill mb-0">
-                              <label class="form-label" for="form3Example1c">نام کاربری</label>
-                            <input name="username" type="text" id="form3Example1c" class="form-control" required />
-                          </div>
-                        </div>
-      
-                        <div class="d-flex flex-row align-items-center mb-4">
-                          <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                          <div class="form-outline flex-fill mb-0">
-                              <label class="form-label" for="form3Example3c">ایمیل</label>
-                            <input name="email" type="email" id="form3Example3c" class="form-control" required />
-                          </div>
-                        </div>
-      
-                        <div class="d-flex flex-row align-items-center mb-4">
-                          <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                          <div class="form-outline flex-fill mb-0">
-                              <label class="form-label" for="form3Example4c">رمز عبور</label>
-                            <input name="password1" type="password" id="form3Example4c" class="form-control" />
-                          </div>
-                        </div>
-      
-                        <div class="d-flex flex-row align-items-center mb-4">
-                          <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                          <div class="form-outline flex-fill mb-0">
-                              <label class="form-label" for="form3Example4cd">تکرار رمز عبور</label>
-                            <input name="password2" type="password" id="form3Example4cd" class="form-control" />
-                          </div>
-                        </div>
-                        <div class="d-flex flex-row align-items-center mb-4">
-                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                            <div class="form-outline flex-fill mb-0">
-                                <label class="form-label" for="form3Example1c">نام </label>
-                              <input name="first_name" type="text" id="form3Example1c" class="form-control" />
-                            </div>
-                          </div>
-                          <div class="d-flex flex-row align-items-center mb-4">
-                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                            <div class="form-outline flex-fill mb-0">
-                                <label class="form-label" for="form3Example1c">نام خانوادگی</label>
-                              <input name="last_name" type="text" id="form3Example1c" class="form-control" />
-                            </div>
-                          </div>
-      
-                        <div class="form-check d-flex justify-content-center mb-5">
-                            <label class="form-check-label" for="form2Example3">
-                                 قبلا ثبت نام کرده‌ام <a href="{% url 'account:login' %}"> ورود</a>
-                            </label>
-                        </div>
+                      {{ form.as_p }}
       
                         <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                           <button type="submit" class="btn btn-primary btn-lg">ثبت نام</button>
                         </div>
       
                       </form>
+                      <p class="mb-0"> حساب کاربری دارم 
+                        <a href="{% url 'account:login' %}" class="text-primary"> ورود </a>
+                      </p>
       
                     </div>
                     <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">

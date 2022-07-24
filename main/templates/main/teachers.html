@@ -11,14 +11,17 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>نام</th>
                                             <th>تلفن </th>
                                             <th>ایمیل</th>
-                                            <th>سن</th>
-                                            <th> سابقه کاری</th>
+                                            <th>تاریخ تولد </th>
+                                            <th>تاریخ ورود</th>
+                                            <th>مدرک تحصیلی</th>
+                                            <th>آدرس</th>
+                                            <th>عملیات</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -26,23 +29,49 @@
                                             <th>نام</th>
                                             <th>تلفن </th>
                                             <th>ایمیل</th>
-                                            <th>سن</th>
-                                            <th> سابقه کاری</th>
+                                            <th>تاریخ تولد </th>
+                                            <th>تاریخ ورود</th>
+                                            <th>مدرک تحصیلی</th>
+                                            <th>آدرس</th>
+                                            <th>عملیات</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         {% for teacher in teachers %}
                                         <tr>
-                                            <td>{{ teacher.name }}</td>
+                                            <td>{{ teacher.user.first_name }} {{teacher.user.last_name}}</td>
                                             <td>{{ teacher.phone }}</td>
-                                            <td>{{ teacher.email }}</td>
-                                            <td>{{ teacher.age }}</td>
-                                            <td>{{ teacher.experieces }}</td>
+                                            <td>{{ teacher.user.email }}</td>
+                                            <td>{{ teacher.date_of_birth }}</td>
+                                            <td>{{ teacher.join_date }}</td>
+                                            <td>{{ teacher.degree }}</td>
+                                            <td>{{ teacher.address }}</td>
+                                            <td>
+                                                <a href="{% url 'main:teacher_edit' teacher_id=teacher.id %}" class="btn btn-primary">ویرایش</a>
+                                                <a class="btn btn-danger" href="{% url 'main:teacher_delete' teacher_id=teacher.id %}" data-toggle="modal" data-target="#removeteacher">حذف</a>
+                                            </td>
                                         </tr>
+                                        <div class="modal fade" id="removeteacher" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">آیا واقعا می‌خواهید استاد را حذف کنید؟</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">خیر</button>
+                        <a class="btn btn-primary" href="{% url 'main:teacher_delete' teacher_id=teacher.id %}">حذف</a>
+                    </div>
+                </div>
+            </div>
+        </div>
                                         {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
+                            <a href="{% url 'main:teacher_add' %}" class="btn btn-success">افزودن استاد</a>
                         </div>
                     </div>
 
@@ -50,6 +79,7 @@
                 <!-- /.container-fluid -->
 
             </div>
+            
             <!-- End of Main Content -->
 
             <!-- Footer -->

@@ -1,0 +1,27 @@
+{% extends 'main/layout.html' %}
+{% block title %}
+افزودن استاد 
+{% endblock %}
+{% block content %}
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1 class="page-header text-center">افزودن استاد جدید </h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 m-auto">
+                    <form action="{% url 'main:teacher_add' %}" method="post">
+                        {% csrf_token %}
+                    {{form1.as_p}}
+                    {{form2.as_p}}
+                    <input type="submit" value="افزودن" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+                </div>
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+        {% endblock %}

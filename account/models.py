@@ -8,21 +8,30 @@ class Teacher(models.Model):
         verbose_name = 'استاد'
         verbose_name_plural = 'استاد'
     user = models.OneToOneField('auth.User', on_delete=models.CASCADE, verbose_name='کاربر')
-    name = models.CharField(max_length=50, verbose_name='نام')
-    email = models.EmailField(max_length=50, verbose_name='ایمیل')
-    phone = models.IntegerField('تلفن')
-    age = models.IntegerField('سن')
-    experieces = models.IntegerField('سابقه کاری')
+    phone = models.CharField(max_length=11, verbose_name='شماره تلفن')
+    date_of_birth = models.DateField('تاریخ تولد')
+    address = models.CharField('آدرس', max_length=200)
+    join_date = models.DateField('تاریخ عضویت', auto_now_add=True)
+    degree_choices = (
+        ('دیپلم', 'دیپلم'),
+        ('فوق دیپلم', 'فوق دیپلم'),
+        ('لیسانس', 'لیسانس'),
+        ('فوق لیسانس', 'فوق لیسانس'),
+        ('دکتری', 'دکتری'),
+    )
+    degree = models.CharField('مدرک', max_length=10, choices=degree_choices)
 
 
     def __str__(self):
-        return self.name
+        return self.user.first_name + ' ' + self.user.last_name
 
 class Course(models.Model):
     class Meta:
         verbose_name = 'دوره'
         verbose_name_plural = 'دوره '
     name = models.CharField(max_length=50, verbose_name='نام دوره')
+    start_date = models.DateField('تاریخ شروع')
+    end_date = models.DateField('تاریخ پایان')
     length = models.IntegerField(verbose_name='طول دوره')
     teacher = models.ForeignKey(Teacher, on_delete=models.PROTECT, verbose_name='استاد')
     status_choices = (
@@ -40,17 +49,23 @@ class Student(models.Model):
         verbose_name = 'دانشجو'
         verbose_name_plural = 'دانشجو'
     user = models.OneToOneField('auth.User', on_delete=models.CASCADE, related_name='student', verbose_name='کاربر')
-    name = models.CharField(max_length=50, verbose_name='نام')
-    email = models.EmailField(max_length=50, verbose_name='ایمیل')
-    phone = models.IntegerField(verbose_name='شماره تلفن')
-    age = models.IntegerField(verbose_name='سن')
+    phone = models.CharField(max_length=11, verbose_name='شماره تلفن')
+    date_of_birth = models.DateField('تاریخ تولد')
+    address = models.CharField('آدرس', max_length=200)
+    join_date = models.DateField('تاریخ عضویت', auto_now_add=True)
     courses = models.ManyToManyField(Course, verbose_name='دوره ها')
+    degree_choices = (
+        ('دیپلم', 'دیپلم'),
+        ('فوق دیپلم', 'فوق دیپلم'),
+        ('لیسانس', 'لیسانس'),
+        ('فوق لیسانس', 'فوق لیسانس'),
+        ('دکتری', 'دکتری'),
+    )
+    degree = models.CharField('مدرک', max_length=10, choices=degree_choices)
 
     def __str__(self):
-        return self.name
+        return self.usser.first_name + ' ' + self.usser.last_name
 
-    def __str__(self):
-        return self.name
 
 
 class Mark(models.Model):

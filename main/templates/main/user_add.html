@@ -1,0 +1,26 @@
+{% extends 'main/layout.html' %}
+{% block title %}
+افزودن کاربر 
+{% endblock %}
+{% block content %}
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1 class="page-header text-center">افزودن کاربر جدید </h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 m-auto">
+                    <form action="{% url 'main:user_add' %}" method="post">
+                        {% csrf_token %}
+                    {{form.as_p}}
+                    <input type="submit" value="افزودن" class="btn btn-success">
+                    </form>
+                </div>
+            </div>
+                </div>
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+        {% endblock %}

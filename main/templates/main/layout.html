@@ -96,7 +96,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center justify-content-start" href="">
+                <a class="nav-link d-flex align-items-center justify-content-start" href="{% url 'main:students' %}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>مدیریت دانشجویان</span></a>
             </li>
@@ -176,6 +176,16 @@
 
                 </nav>
                 <!-- End of Topbar -->
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{message}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+                {% endif %}
 
 {% block content %}{% endblock %}
 
@@ -203,8 +213,7 @@
         </a>
     
         <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
