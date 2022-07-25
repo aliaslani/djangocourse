@@ -11,7 +11,7 @@
     <meta name="author" content="">
    <title> {% block title %}
     {% endblock %} </title>
-
+{% block header %}
     <!-- Custom fonts for this template-->
     <link href="{% static 'main/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link
@@ -20,6 +20,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'main/css/sb-admin-2.css' %}" rel="stylesheet">
+{% endblock %}
 </head>
 
 <body id="page-top" style="direction:rtl">

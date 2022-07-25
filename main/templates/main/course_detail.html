@@ -1,13 +1,14 @@
 {% extends 'main/layout.html' %}
 {% block title %}
-مدیریت دوره‌ها
+{{ course.name}}
 {% endblock %}
 {% block content %}
                 <div class="container-fluid">
 
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">لیست دوره‌ها</h6>
+                        <div class="card-header py-3 d-flex justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary"> {{ course.name}} </h6>
+                            <a href="{% url 'main:courses' %}" class="btn btn-warning">همه دوره‌ها</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -15,39 +16,36 @@
                                     <thead>
                                         <tr>
                                             <th>نام دوره</th>
-                                            <th>طول دوره (جلسه) </th>
                                             <th>استاد</th>
                                             <th>وضعیت</th>
+                                            <th>تاریخ شروع</th>
+                                            <th>تاریخ پایان</th>
+                                            <th>تعداد جلسات</th>
+                                            <th>دانشجویان</th>
                                             <th>عملیات</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>نام دوره</th>
-                                            <th>طول دوره </th>
-                                            <th>استاد</th>
-                                            <th>وضعیت</th>
-                                            <th>عملیات</th>
-                                        </tr>
-                                    </tfoot>
+                                    
                                     <tbody>
-                                        {% for course in courses %}
                                         <tr>
-                                            <td><a href="{% url 'main:course_detail' course_id=course.id %}">{{ course.name }}</a></td>
-                                            <td>{{ course.length }}</td>
+                                            <td>{{ course.name }}</td>
                                             <td>{{ course.teacher }}</td>
                                             <td>{{ course.get_status_display }}</td>
+                                            <td>{{ course.start_date }}</td>
+                                            <td>{{ course.end_date }}</td>
+                                            <td>{{ course.length }}</td>
+                                            <td>{% for student in course.student_set.all %}
+                                                {{ student.user.first_name }} {{ student.user.last_name }}<br>
+                                                {% endfor %}</td>
                                             <td>
                                                 <a href="{% url 'main:course_edit' course_id=course.id %}" class="btn btn-primary">ویرایش</a>
                                                 <a href="{% url 'main:course_delete' course_id=course.id %}" class="btn btn-danger" onclick="return confirm('آیا مطمئن هستید؟')">حذف</a>
                                             </td>
                                         </tr>
                                         
-                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="{% url 'main:course_add' %}" class="btn btn-success">افزودن دوره</a>
                         </div>
                     </div>
 

@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 
@@ -21,6 +22,8 @@ class Teacher(models.Model):
     )
     degree = models.CharField('مدرک', max_length=10, choices=degree_choices)
 
+    def get_full_name(self):
+        return self.user.first_name + ' ' + self.user.last_name
 
     def __str__(self):
         return self.user.first_name + ' ' + self.user.last_name
@@ -40,6 +43,12 @@ class Course(models.Model):
         ('3', 'پایان داده شده'),
     )
     status = models.CharField(max_length=1, choices=status_choices, verbose_name='وضعیت')
+
+    def get_time_difference_in_days(self):
+        return (self.end_date - self.start_date).days
+    
+    def get_time_untill_now_in_days(self):
+        return (datetime.now().date() - self.start_date).days
 
     def __str__(self):
         return self.name
@@ -62,6 +71,9 @@ class Student(models.Model):
         ('دکتری', 'دکتری'),
     )
     degree = models.CharField('مدرک', max_length=10, choices=degree_choices)
+
+    def get_full_name(self):
+        return self.user.first_name + ' ' + self.user.last_name
 
     def __str__(self):
         return self.usser.first_name + ' ' + self.usser.last_name

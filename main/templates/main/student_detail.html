@@ -1,17 +1,18 @@
 {% extends 'main/layout.html' %}
 {% block title %}
-مدیریت دانشجویان
+{{ student.name}}
 {% endblock %}
 {% block content %}
                 <div class="container-fluid">
 
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">لیست دانشجویان</h6>
+                        <div class="card-header py-3 d-flex justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary"> {{ student.name}} </h6>
+                            <a href="{% url 'main:students' %}" class="btn btn-warning">همه دانشجویان</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>نام</th>
@@ -24,22 +25,10 @@
                                             <th>عملیات</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>نام</th>
-                                            <th>تلفن </th>
-                                            <th>ایمیل</th>
-                                            <th>تاریخ تولد </th>
-                                            <th>تاریخ ورود </th>
-                                            <th>دوره‌ها</th>
-                                            <th>مدرک تحصیلی</th>
-                                            <th>عملیات</th>
-                                        </tr>
-                                    </tfoot>
+                                    
                                     <tbody>
-                                        {% for student in students %}
                                         <tr>
-                                            <td><a href="{% url 'main:student_detail' student_id=student.id %}" >{{ student.user.first_name }} {{student.user.last_name}}</a></td>
+                                            <td>{{ student.user.first_name }} {{student.user.last_name}}</td>
                                             <td>{{ student.phone }}</td>
                                             <td>{{ student.user.email }}</td>
                                             <td>{{ student.date_of_birth }}</td>
@@ -54,19 +43,15 @@
                                             </td>
                                         </tr>
                                         
-                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="{% url 'main:student_add' %}" class="btn btn-success">افزودن دانشجو</a>
                         </div>
                     </div>
 
                 </div>
-                <!-- /.container-fluid -->
 
             </div>
-            
             <!-- End of Main Content -->
 
             <!-- Footer -->

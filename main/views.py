@@ -168,6 +168,8 @@ def course_edit(request, course_id):
         if request.method == 'POST':
             if form.is_valid():
                 course.name = form.cleaned_data['name']
+                course.start_date = form.cleaned_data['start_date']
+                course.end_date = form.cleaned_data['end_date']
                 course.length = form.cleaned_data['length']
                 course.teacher = form.cleaned_data['teacher']
                 course.status = form.cleaned_data['status']
@@ -182,7 +184,7 @@ def course_delete(request, course_id):
     if request.user.groups.filter(name='admin').exists():
         course = get_object_or_404(Course, id=course_id)
         course.delete()
-        return redirect('main:courses')
+        return redirect('main:courses', user_role='admin')
     else:
         return redirect('main:not_found')
 
@@ -236,5 +238,34 @@ def student_add(request):
                     messages.success(request, 'دانشجوی جدید با موفقیت افزوده شد')
                     return redirect('main:students')
         return render(request, 'main/student_add.html', {'form1': form1, 'form2':form2, 'user_role': user_role})
+    else:
+        return redirect('main:not_found')
+
+@login_required
+def course_detail(request, course_id):
+    if request.user.groups.filter(name='admin').exists():
+        user_role = 'admin'
+        course = Course.objects.get(id=course_id)
+        return render(request, 'main/course_detail.html', {'course': course, 'user_role': user_role})
+    else:
+        return redirect('main:not_found')
+
+
+@login_required
+def student_detail(request, student_id):
+    if request.user.groups.filter(name='admin').exists():
+        user_role = 'admin'
+        student = get_object_or_404(Student, id=student_id)
+        return render(request, 'main/student_detail.html', {'student': student, 'user_role': user_role})
+    else:
+        return redirect('main:not_found')
+
+@login_required
+def teacher_detail(request, teacher_id):
+    if request.user.groups.filter(name='admin').exists():
+        user_role = 'admin'
+        teacher = get_object_or_404(Teacher, id=teacher_id)
+        courses = Course.objects.filter(teacher=teacher)
+        return render(request, 'main/teacher_detail.html', {'teacher': teacher, 'user_role': user_role, 'courses': courses})
     else:
         return redirect('main:not_found')
