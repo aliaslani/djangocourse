@@ -33,7 +33,7 @@ class TeacherForm(ModelForm):
     class Meta:
         model = Teacher
         fields = ['phone', 'address', 'date_of_birth', 'degree']
-    phone = forms.IntegerField(label='شماره تلفن', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    phone = forms.CharField(label='شماره تلفن', widget=forms.TextInput(attrs={'class': 'form-control'}))
     address = forms.CharField(label='آدرس', widget=forms.TextInput(attrs={'class': 'form-control'}))
     date_of_birth = forms.DateField(label='تاریخ تولد', widget=forms.DateInput(attrs={'class': 'form-control'}))
     degree_choices = (
@@ -45,6 +45,20 @@ class TeacherForm(ModelForm):
     )
     degree = forms.ChoiceField(label='مدرک تحصیلی', choices=degree_choices, widget=forms.Select(attrs={'class': 'form-control'}))
     
+class TeacherEditForm(ModelForm):
+    class Meta:
+        model = Teacher
+        fields = ['phone', 'address', 'degree']
+    phone = forms.CharField(label='شماره تلفن', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    address = forms.CharField(label='آدرس', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    degree_choices = (
+        ('دیپلم', 'دیپلم'),
+        ('فوق دیپلم', 'فوق دیپلم'),
+        ('لیسانس', 'لیسانس'),
+        ('فوق لیسانس', 'فوق لیسانس'),
+        ('دکتری', 'دکتری'),
+    )
+    degree = forms.ChoiceField(label='مدرک تحصیلی', choices=degree_choices, widget=forms.Select(attrs={'class': 'form-control'}))
 
 
 class CourseForm(ModelForm):
@@ -68,7 +82,7 @@ class StudentForm(ModelForm):
     class Meta:
         model = Student
         fields = ['phone', 'date_of_birth', 'address', 'courses']
-    phone = forms.IntegerField(label='شماره تلفن', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    phone = forms.CharField(label='شماره تلفن', widget=forms.TextInput(attrs={'class': 'form-control'}))
     date_of_birth = forms.DateField(label='تاریخ تولد', widget=forms.DateInput(attrs={'class': 'form-control'}))
     address = forms.CharField(label='آدرس', widget=forms.TextInput(attrs={'class': 'form-control'}))
     courses = forms.ModelMultipleChoiceField(label='دروس', queryset=Course.objects.all(), required=True, widget=forms.SelectMultiple(attrs={'class': 'form-control'}))
@@ -80,3 +94,5 @@ class StudentForm(ModelForm):
         ('دکتری', 'دکتری'),
     )
     degree = forms.ChoiceField(label='مدرک تحصیلی', choices=degree_choices, widget=forms.Select(attrs={'class': 'form-control'}))
+
+

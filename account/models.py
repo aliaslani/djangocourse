@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import datetime
+from khayyam import JalaliDate
+from persiantools import digits
 
 # Create your models here.
 
@@ -13,6 +15,7 @@ class Teacher(models.Model):
     date_of_birth = models.DateField('تاریخ تولد')
     address = models.CharField('آدرس', max_length=200)
     join_date = models.DateField('تاریخ عضویت', auto_now_add=True)
+    
     degree_choices = (
         ('دیپلم', 'دیپلم'),
         ('فوق دیپلم', 'فوق دیپلم'),
@@ -27,6 +30,12 @@ class Teacher(models.Model):
 
     def __str__(self):
         return self.user.first_name + ' ' + self.user.last_name
+
+    def jjoin_date(self):
+        return digits.en_to_fa(JalaliDate(self.join_date).strftime('%A %d %B %Y'))
+    
+    def jdate_of_birth(self):
+        return digits.en_to_fa(JalaliDate(self.date_of_birth).strftime('%A %d %B %Y'))
 
 class Course(models.Model):
     class Meta:
@@ -50,6 +59,11 @@ class Course(models.Model):
     def get_time_untill_now_in_days(self):
         return (datetime.now().date() - self.start_date).days
 
+    def jstart_date(self):
+        return digits.en_to_fa(JalaliDate(self.start_date).strftime('%A %d %B %Y'))
+    def jend_date(self):
+        return digits.en_to_fa(JalaliDate(self.end_date).strftime('%A %d %B %Y'))
+    
     def __str__(self):
         return self.name
 
@@ -74,6 +88,12 @@ class Student(models.Model):
 
     def get_full_name(self):
         return self.user.first_name + ' ' + self.user.last_name
+
+    def jdate_of_birth(self):
+        return digits.en_to_fa(JalaliDate(self.date_of_birth).strftime('%A %d %B %Y'))
+
+    def jjoin_date(self):
+        return digits.en_to_fa(JalaliDate(self.join_date).strftime('%A %d %B %Y'))
 
     def __str__(self):
         return self.usser.first_name + ' ' + self.usser.last_name
@@ -106,6 +126,9 @@ class Homework(models.Model):
 
     def __str__(self):
         return self.title
+
+    def jdeadline(self):
+        return digits.en_to_fa(JalaliDate(self.deadline).strftime('%A %d %B %Y'))
 
 class Answer(models.Model):
     class Meta:

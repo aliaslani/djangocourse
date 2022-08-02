@@ -1,4 +1,5 @@
 {% extends 'main/layout.html' %}
+{% load jalali_tags %}
 {% block title %}
 مدیریت اساتید
 {% endblock %}
@@ -19,7 +20,6 @@
                                             <th>ایمیل</th>
                                             <th>تاریخ ورود</th>
                                             <th>مدرک تحصیلی</th>
-                                            <th>دوره‌ها</th>
                                             <th>آدرس</th>
                                         </tr>
                                     </thead>
@@ -30,7 +30,6 @@
                                             <th>ایمیل</th>
                                             <th>تاریخ ورود</th>
                                             <th>مدرک تحصیلی</th>
-                                            <th>دوره‌ها</th>
                                             <th>آدرس</th>
                                         </tr>
                                     </tfoot>
@@ -40,13 +39,9 @@
                                             <td><a href="{% url 'main:teacher_detail' teacher_id=teacher.id %}">{{ teacher.user.first_name }} {{teacher.user.last_name}}</a></td>
                                             <td>{{ teacher.phone }}</td>
                                             <td>{{ teacher.user.email }}</td>
-                                            <td>{{ teacher.join_date }}</td>
+                                            <td>{{ teacher.jjoin_date }}</td>
                                             <td>{{ teacher.degree }}</td>
-                                            <td>
-                                                {% for course in teacher.courses %}
-                                                {{ course.name }}
-                                                {% endfor %}
-                                            </td>
+                                            
                                             <td>{{ teacher.address }}</td>
                                             
                                         </tr>

@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout, authenticate, login as auth_login
 from django.contrib.auth.models import User, Group
-from account.forms import CustomUserForm, TeacherForm, CourseForm, StudentForm
+from account.forms import CustomUserForm, TeacherForm, CourseForm, StudentForm, TeacherEditForm
 from django.contrib import messages
 from account.models import Student, Teacher, Course, Mark
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from persiantools.jdatetime import JalaliDate
 # Create your views here.
 
 def index(request):
@@ -81,16 +82,14 @@ def not_found(request):
 @login_required
 def teacher_edit(request, teacher_id):
     teacher = Teacher.objects.get(id=teacher_id)
-    form = TeacherForm(request.POST or None, initial={'name': teacher.name, 'email': teacher.email, 'phone': teacher.phone, 'age': teacher.age, 'experieces': teacher.experieces})
+    form = TeacherEditForm(request.POST or None, initial={'address': teacher.address, 'phone': teacher.phone, 'degree': teacher.degree})
     if request.user.groups.filter(name='admin').exists():
         user_role = 'admin'
         if request.method == 'POST':
             if form.is_valid():
-                teacher.name = form.cleaned_data['name']
-                teacher.email = form.cleaned_data['email']
                 teacher.phone = form.cleaned_data['phone']
-                teacher.age = form.cleaned_data['age']
-                teacher.experieces = form.cleaned_data['experieces']
+                teacher.address = form.cleaned_data['address']
+                teacher.degree = form.cleaned_data['degree']
                 teacher.save()
                 return redirect('main:teachers')
         return render(request, 'main/teacher_edit.html', {'teacher': teacher, 'user_role': user_role, 'form': form})
@@ -121,7 +120,7 @@ def teacher_add(request):
                 new_user.groups.add(Group.objects.get(name='teacher'))
                 messages.success(request, 'حساب کاربری با موفقیت ایجاد شد')
                 if form2.is_valid():
-                    new_teacher = Teacher.objects.create(user = new_user, phone=form2.cleaned_data['phone'], date_of_birth=form2.cleaned_data['date_of_birth'], address=form2.cleaned_data['address'], degree=form2.cleaned_data['degree'])
+                    new_teacher = Teacher.objects.create(user = new_user, phone=form2.cleaned_data['phone'], date_of_birth=JalaliDate(form2.cleaned_data['date_of_birth'].year, form2.cleaned_data['date_of_birth'].month, form2.cleaned_data['date_of_birth'].day ).to_gregorian(), address=form2.cleaned_data['address'], degree=form2.cleaned_data['degree'])
                     new_teacher.save()
                     messages.success(request, 'استاد جدید با موفقیت ایجاد شد')
                     return redirect('main:teachers')
@@ -168,8 +167,8 @@ def course_edit(request, course_id):
         if request.method == 'POST':
             if form.is_valid():
                 course.name = form.cleaned_data['name']
-                course.start_date = form.cleaned_data['start_date']
-                course.end_date = form.cleaned_data['end_date']
+                course.start_date = JalaliDate(form.cleaned_data['start_date'].year, form.cleaned_data['start_date'].month, form.cleaned_data['start_date'].day ).to_gregorian()
+                course.end_date = JalaliDate(form.cleaned_data['end_date'].year, form.cleaned_data['end_date'].month, form.cleaned_data['end_date'].day ).to_gregorian()
                 course.length = form.cleaned_data['length']
                 course.teacher = form.cleaned_data['teacher']
                 course.status = form.cleaned_data['status']
@@ -184,24 +183,23 @@ def course_delete(request, course_id):
     if request.user.groups.filter(name='admin').exists():
         course = get_object_or_404(Course, id=course_id)
         course.delete()
-        return redirect('main:courses', user_role='admin')
+        return redirect('main:courses')
     else:
         return redirect('main:not_found')
 
 
 @login_required
 def student_edit(request, student_id):
-    student = student.objects.get(id=student_id)
-    form = StudentForm(request.POST or None, initial={'name': student.name, 'email': student.email, 'phone': student.phone, 'age': student.age, 'courses': student.courses.all()})
+    student = Student.objects.get(id=student_id)
+    form = StudentForm(request.POST or None, initial={'name': student.user.get_full_name, 'email': student.user.email, 'phone': student.phone, 'date_of_birth': JalaliDate.to_jalali(student.date_of_birth.year, student.date_of_birth.month, student.date_of_birth.day), 'courses': student.courses.all(), 'address': student.address, 'degree': student.degree})
     if request.user.groups.filter(name='admin').exists():
         user_role = 'admin'
         if request.method == 'POST':
             if form.is_valid():
-                student.name = form.cleaned_data['name']
-                student.email = form.cleaned_data['email']
                 student.phone = form.cleaned_data['phone']
-                student.age = form.cleaned_data['age']
-                student.experieces = form.cleaned_data['experieces']
+                student.address = form.cleaned_data['address']
+                student.courses.set(form.cleaned_data['courses'])
+                student.degree = form.cleaned_data['degree']
                 student.save()
                 return redirect('main:students')
         return render(request, 'main/student_edit.html', {'student': student, 'user_role': user_role, 'form': form})
@@ -256,7 +254,8 @@ def student_detail(request, student_id):
     if request.user.groups.filter(name='admin').exists():
         user_role = 'admin'
         student = get_object_or_404(Student, id=student_id)
-        return render(request, 'main/student_detail.html', {'student': student, 'user_role': user_role})
+        courses = student.courses.all()
+        return render(request, 'main/student_detail.html', {'student': student, 'user_role': user_role, 'courses': courses})
     else:
         return redirect('main:not_found')
 

@@ -31,8 +31,8 @@
                                             <td>{{ course.name }}</td>
                                             <td>{{ course.teacher }}</td>
                                             <td>{{ course.get_status_display }}</td>
-                                            <td>{{ course.start_date }}</td>
-                                            <td>{{ course.end_date }}</td>
+                                            <td>{{ course.jstart_date }}</td>
+                                            <td>{{ course.jend_date }}</td>
                                             <td>{{ course.length }}</td>
                                             <td>{% for student in course.student_set.all %}
                                                 {{ student.user.first_name }} {{ student.user.last_name }}<br>
