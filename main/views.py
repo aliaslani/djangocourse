@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout, authenticate, login as auth_login
 from django.contrib.auth.models import User, Group
-from account.forms import CustomUserForm, TeacherForm, CourseForm, StudentForm, TeacherEditForm
+from account.forms import CustomUserForm, TeacherForm, CourseForm, StudentForm, TeacherEditForm, CustomUserFormTeacher, CustomUserFormStudent
 from django.contrib import messages
 from account.models import Student, Teacher, Course, Mark
 from django.contrib.auth.decorators import login_required
@@ -111,7 +111,7 @@ def teacher_delete(request, teacher_id):
 def teacher_add(request):
     if request.user.groups.filter(name='admin').exists():
         user_role = 'admin'
-        form1 = CustomUserForm(request.POST or None)
+        form1 = CustomUserFormTeacher(request.POST or None)
         form2 = TeacherForm(request.POST or None)
         if request.method == 'POST':
             if form1.is_valid():
@@ -221,7 +221,7 @@ def student_delete(request, student_id):
 def student_add(request):
     if request.user.groups.filter(name='admin').exists():
         user_role = 'admin'
-        form1 = CustomUserForm(request.POST or None)
+        form1 = CustomUserFormStudent(request.POST or None)
         form2 = StudentForm(request.POST or None)
         if request.method == 'POST':
             if form1.is_valid():

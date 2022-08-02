@@ -28,6 +28,48 @@ class CustomUserForm(UserCreationForm):
     def email_validator(self, email):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('ایمیل تکراری است')
+class CustomUserFormTeacher(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2', 'email', 'first_name', 'last_name']
+    username = forms.CharField(label='نام کاربری', max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password1 = forms.CharField(label='کلمه عبور', max_length=30, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='تکرار کلمه عبور', max_length=30, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label='ایمیل', max_length=30, required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(label='نام', max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(label='نام خانوادگی', max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    
+    role = 'teacher'
+
+    def username_validator(self, username):
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError('نام کاربری تکراری است')
+    
+    def email_validator(self, email):
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('ایمیل تکراری است')
+
+class CustomUserFormStudent(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2', 'email', 'first_name', 'last_name']
+    username = forms.CharField(label='نام کاربری', max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password1 = forms.CharField(label='کلمه عبور', max_length=30, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='تکرار کلمه عبور', max_length=30, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label='ایمیل', max_length=30, required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(label='نام', max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(label='نام خانوادگی', max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    
+    role = 'student'
+
+    def username_validator(self, username):
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError('نام کاربری تکراری است')
+    
+    def email_validator(self, email):
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('ایمیل تکراری است')
+
 
 class TeacherForm(ModelForm):
     class Meta:
@@ -35,7 +77,7 @@ class TeacherForm(ModelForm):
         fields = ['phone', 'address', 'date_of_birth', 'degree']
     phone = forms.CharField(label='شماره تلفن', widget=forms.TextInput(attrs={'class': 'form-control'}))
     address = forms.CharField(label='آدرس', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    date_of_birth = forms.DateField(label='تاریخ تولد', widget=forms.DateInput(attrs={'class': 'form-control'}))
+    date_of_birth = forms.DateField(label='تاریخ تولد', widget=forms.DateInput(attrs={'class': 'form-control', 'placeholder':'1365-01-01'}))
     degree_choices = (
         ('دیپلم', 'دیپلم'),
         ('فوق دیپلم', 'فوق دیپلم'),
@@ -66,8 +108,8 @@ class CourseForm(ModelForm):
         model = Course
         fields = ['name', 'start_date', 'end_date', 'length', 'teacher', 'status']
     name = forms.CharField(label='نام درس', max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    start_date = forms.DateField(label='تاریخ شروع', widget=forms.DateInput(attrs={'class': 'form-control'}))
-    end_date = forms.DateField(label='تاریخ پایان', widget=forms.DateInput(attrs={'class': 'form-control'}))
+    start_date = forms.DateField(label='تاریخ شروع', widget=forms.DateInput(attrs={'class': 'form-control', 'placeholder':'1401-01-01'}))
+    end_date = forms.DateField(label='تاریخ پایان', widget=forms.DateInput(attrs={'class': 'form-control', 'placeholder':'1401-01-01'}))
     length = forms.IntegerField(label='طول درس', widget=forms.TextInput(attrs={'class': 'form-control'}))
     teacher = forms.ModelChoiceField(label='استاد', queryset=Teacher.objects.all(), required=True, widget=forms.Select(attrs={'class': 'form-control'}))
     status_choices = (
@@ -83,7 +125,7 @@ class StudentForm(ModelForm):
         model = Student
         fields = ['phone', 'date_of_birth', 'address', 'courses']
     phone = forms.CharField(label='شماره تلفن', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    date_of_birth = forms.DateField(label='تاریخ تولد', widget=forms.DateInput(attrs={'class': 'form-control'}))
+    date_of_birth = forms.DateField(label='تاریخ تولد', widget=forms.DateInput(attrs={'class': 'form-control', 'placeholder':'1385-01-01'}))
     address = forms.CharField(label='آدرس', widget=forms.TextInput(attrs={'class': 'form-control'}))
     courses = forms.ModelMultipleChoiceField(label='دروس', queryset=Course.objects.all(), required=True, widget=forms.SelectMultiple(attrs={'class': 'form-control'}))
     degree_choices = (
